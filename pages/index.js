@@ -79,7 +79,7 @@ export default function components() {
         })
         if (!response.ok) {
             const errorData = await response.json()
-            setResult({ data: '我好像没有识别出来，换一张图片或者重新上传！', error: errorData.error })
+            setResult({ data: ' seem to have not recognized it. Please try another image or upload again！', error: errorData.error })
             setLoading(false)
             return
         }
@@ -91,7 +91,7 @@ export default function components() {
     return (
         <div className="container">
             <Head>
-                <title>我知道你的宠物在想什么！</title>
+                <title>know what think！</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             </Head>
             <main className="flex flex-col items-center justify-center min-h-screen py-2">
@@ -120,11 +120,11 @@ export default function components() {
                                 {compressing
                                     ? '🐱🐱🐱🐱🐱🐱'
                                     : loading
-                                    ? '让我想想你的宠物在想些什么呢...'
+                                    ? 'Let me think about what  thinking...'
                                     : result.error
-                                    ? `好像我没看懂它在想什么，请重试或换一张图片！`
+                                    ? `  It seems that I don't understand what it is thinking. Please try again or change a picture.！`
                                     : result.data ||
-                                      '🐱: 哎呀，草地上有好多枯叶，我得快点跑到草丛里，这样铲屎官就看不到我了！'}
+                                      '🐱:oops, im going to bed , ！'}
                             </p>
                         </div>
                     </CardContent>
@@ -138,7 +138,7 @@ export default function components() {
                         encType="multipart/form-data"
                     >
                         <div className="grid w-full gap-4 mt-4">
-                            <Label htmlFor="catImage">上传你宠物的照片，AI告诉你它在想些什么~</Label>
+                            <Label htmlFor="catImage">Upload photo of living organism and AI will tell you what it is thinking~</Label>
                             <Input
                                 required
                                 id="catImage"
@@ -148,12 +148,12 @@ export default function components() {
                                 onChange={previewImage}
                             />
                             <Button type="submit" variant="dark" disabled={loading || compressing}>
-                                {compressing ? '识别图像中' : loading ? '识别图像中' : '让我看看你在想什么呢'}
+                                {compressing ? 'Recognizing image' : loading ? 'Recognizing image' : 'Let me see what you are thinking'}
                             </Button>
                         </div>
                     </form>
                 </div>
-                <p className="tip mt-4">本服务不会收集、存储或使用任何与图片相关的个人信息</p>
+                <p className="tip mt-4"> This service does not collect, store or use any personal information related to images</p>
                 <footer className="flex justify-center items-center">
                     &copy; 2024
                     {'-'}
@@ -164,9 +164,9 @@ export default function components() {
                     . All rights reserved.
                 </footer>
                 <p>
-                    <a href="https://gemini.smartai.wtf/">GeminiChat</a> |
-                    <a href="https://tools.smartai.wtf/"> SmartAI</a> |
-                    <a href="https://babythoughts.netlify.app/"> BabyThoughts</a>
+                    <a href="luxeenet@gmail.com">luxeeOS</a> |
+                    <a href=""> nikki</a> |
+                    <a href="/"> hello</a>
                 </p>
             </main>
         </div>
