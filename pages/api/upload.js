@@ -1,38 +1,38 @@
-import { createRouter } from 'next-connect'
-import multer from 'multer'
-const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require('@google/generative-ai')
+import { createRouter } from 'next-connect';
+import multer from 'multer';
+const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require('@google/generative-ai');
 
-const API_KEY = process.env.GEMINI_API_KEY
-const MODEL_NAME = 'gemini-pro-vision'
+const API_KEY = process.env.GEMINI_API_KEY;
+const MODEL_NAME = 'gemini-pro-vision';
 
 const upload = multer({
     storage: multer.memoryStorage()
-})
+});
 
-const router = createRouter()
+const router = createRouter();
 
-router.use(upload.single('image'))
+router.use(upload.single('image'));
 
 router.all((req, res, next) => {
     if (req.method === 'OPTIONS') {
-        res.status(200).end()
+        res.status(200).end();
     } else {
-        next()
+        next();
     }
-})
+});
 router.post(async (req, res) => {
-    console.log('req.file:', req.file)
+    console.log('req.file:', req.file);
     try {
-        console.log('Starting request...')
-        const genAI = new GoogleGenerativeAI(API_KEY)
-        const model = genAI.getGenerativeModel({ model: MODEL_NAME })
+        console.log('Starting request...');
+        const genAI = new GoogleGenerativeAI(API_KEY);
+        const model = genAI.getGenerativeModel({ model: MODEL_NAME });
 
         const generationConfig = {
             temperature: 0.8,
             topK: 32,
             topP: 1,
             maxOutputTokens: 4096
-        }
+        };
 
         const safetySettings = [
             {
@@ -51,17 +51,16 @@ router.post(async (req, res) => {
                 category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
                 threshold: HarmBlockThreshold.BLOCK_NONE
             }
-        ]
+        ];
 
         if (!req.file) {
-            console.log('No file uploaded.')
-            return res.status(400).json({ error: 'No file uploaded.' })
+            console.log('No file uploaded.');
+            return res.status(400).json({ error: 'No file uploaded.' });
         }
 
         const parts = [
             {
-                text: 'You are a skilled organism language translator. Based on the photo provided by the user, you identify what it is and can guess what the organism might want to say based on its body language, expressions, and surroundings. After translating, please provide the organism's "voice" according to its tone, in a casual manner, using the language specified by the user, to respond. The format is as follows: 🌿: <What type of organism is this> <Organism's thoughts>. If there are no organisms in the uploaded picture, then return "There are no organisms in the picture~".
-            ~""'
+                text: 'You are a skilled organism language translator. Based on the photo provided by the user, you identify what it is and can guess what the organism might want to say based on its body language, expressions, and surroundings. After translating, please provide the organism\'s "voice" according to its tone, in a casual manner, using the language specified by the user, to respond. The format is as follows: 🌿: <What type of organism is this> <Organism\'s thoughts>. If there are no organisms in the uploaded picture, then return "There are no organisms in the picture~".'
             },
             {
                 inlineData: {
@@ -69,30 +68,31 @@ router.post(async (req, res) => {
                     data: req.file.buffer.toString('base64')
                 }
             }
-        ]
+        ];
 
         const result = await model.generateContent({
             contents: [{ role: 'user', parts }],
             generationConfig,
             safetySettings
-        })
+        });
 
         if (!result) {
-            return res.status(502).json({ error: 'Bad Gateway' })
+            return res.status(502).json({ error: 'Bad Gateway' });
         } else {
-            const responseText = result.response.text()
-            return res.status(200).json({ result: responseText })
+            const responseText = result.response.text();
+            return res.status(200).json({ result: responseText });
         }
     } catch (error) {
-        return res.status(500).json({ error: 'Internal Server Error' })
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
-})
+});
 
 export const config = {
     api: {
         bodyParser: false,
         externalResolver: true
     }
-}
+};
 
-export default router.handler()
+export default router.handler();
+
