@@ -98,7 +98,7 @@ export default function components() {
                 <Card className="max-w-md ">
                     <CardHeader>
                         <div className="flex items-center">
-                            <h2 className="text-2xl font-bold">我知道你的宠物在想什么！</h2>
+                            <h2 className="text-2xl font-bold">i know！</h2>
                         </div>
                     </CardHeader>
                     <CardContent>
